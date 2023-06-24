@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mailganer - Email</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        crossorigin="anonymous">
+    <style>
+        .card {
+            position: relative;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid #e5e9f2;
+            border-radius: .2rem;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <nav class="pl-5 navbar navbar-light bg-light">
+        <a class="navbar-brand" href="index.html">Home</a>
+        <a class="navbar-brand" href="index.html">Mailing List</a>
+        <a class="navbar-brand" href="newsletter.html">Newsletter</a>
+        <div class="">
+            <button class="btn btn-primary" onclick="sent_a_newsletter_modal.showModal()">Sent a Newsletter</button>
+            <button class="btn btn-success" onclick="add_a_subscriber_modal.showModal()">Add a Subscriber</button>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <aside class="col-lg-8">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-shopping-cart">
+                            <thead class="text-muted bg-gray">
+                                <tr class="small text-uppercase">
+                                    <th scope="col">Subsciber ID</th>
+                                    <th scope="col">Subsciber Email</th>
+                                    <th scope="col">Subsciber Full Name</th>
+                                    <th scope="col">Opened at</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="opened_subscribers">
+                                                   
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </aside>
+            <aside class="col-lg-4">
+                
+                <div class="card">
+                    <div class="card-body">
+                        <dl class="dlist-align">
+                            <dt>Email Opened by:</dt>
+                            <dd class="text-right text-dark b ml-3" id="total_open_email_count"></dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <div>
+                            <strong>Subject</strong>
+                            <p id="email_subject_text"></p>
+                        </div>
+                        <div>
+                            <strong>Body</strong>
+                            <p id="email_body_text"></p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+
+    <dialog id="add_a_subscriber_modal">
+        <div class="card">
+            <div class="card-body">
+                <div class="m-sm-4">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input class="form-control form-control-lg" type="text" name="first_name"
+                            id="first_name" placeholder="eg. John" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input class="form-control form-control-lg" type="text" name="last_name"
+                            id="last_name" placeholder="eg. Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input class="form-control form-control-lg" type="email" name="email"
+                            id="email" placeholder="john.doe@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Birthday</label>
+                        <input class="form-control form-control-lg" type="date" name="birthday"
+                            id="birthday" placeholder="eg. 23-01-2001">
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="button" class="btn btn-lg btn-secondary"
+                            onclick="add_a_subscriber_modal.close()">Close</button>
+                        <button type="submit" id="add_a_new_subscriber_btn" class="btn btn-lg btn-success">Save</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </dialog>
+    <dialog id="sent_a_newsletter_modal">
+        <div class="container mt-2">
+            <div class="row justify-content-md-center">
+                <div class="col-md-12 col-lg-12">
+                    <h3 class="h3 mb-3">Sent a Newsletter</h3>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <textarea type="text" class="form-control" id="subject" placeholder="Subject for the newsletter"> </textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="editor">Body</label>
+                      <textarea id="editor"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="delay">Email Delay (in seconds) </label>
+                        <input type="number" placeholder="00" class="form-control" id="delay">
+                    </div>
+
+                    <button type="button" class="btn btn-lg btn-secondary"
+                            onclick="sent_a_newsletter_modal.close()">Close</button>
+                    <button type="button" class="btn btn-lg btn-success" id="sent_a_new_newsletter_btn">Submit</button>
+                </div>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="delete_modal"></dialog>
+
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="script/email-opened.js"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="script/subscriber-email.js"></script>
+    <script>
+        tinymce.init({
+            selector:'#editor',
+            menubar: false,
+            statusbar: false,
+            plugins: 'autoresize anchor autolink charmap code codesample directionality fullpage help hr image imagetools insertdatetime link lists media nonbreaking pagebreak preview print searchreplace table template textpattern toc visualblocks visualchars',
+            toolbar: 'h1 h2 bold italic strikethrough blockquote bullist numlist backcolor | link image media | removeformat fullscreen ',
+            skin: 'bootstrap',
+            toolbar_drawer: 'floating',
+            min_height: 230,           
+            autoresize_bottom_margin: 16,
+            setup: (editor) => {
+                editor.on('init', () => {
+                    editor.getContainer().style.transition="border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out"
+                });
+                editor.on('focus', () => {
+                    editor.getContainer().style.boxShadow="0 0 0 .2rem rgba(0, 123, 255, .25)",
+                    editor.getContainer().style.borderColor="#80bdff"
+                });
+                editor.on('blur', () => {
+                    editor.getContainer().style.boxShadow="",
+                    editor.getContainer().style.borderColor=""
+                });
+            }
+        });
+    </script>
+</body>
+</html>
